@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../../index.css';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import useApi from 'shared/hooks/api';
 import {
   Background,
   Card,
@@ -22,15 +23,16 @@ export default function index() {
       email,
       password,
     };
-
+    // useApi
+    //   .post('/login', LoginData)
     axios
-      .post('http://localhost:8080/api/v1/auth/login', LoginData)
+      .post('http://localhost:8081/api/v1/auth/login', LoginData)
       .then(response => {
         if (response.status === 200) {
           const receivedToken = response.data.token;
           localStorage.setItem('authToken', receivedToken);
 
-          history.push('/register');
+          history.push('/dashboard');
         } else {
           console.log('Login failed');
         }

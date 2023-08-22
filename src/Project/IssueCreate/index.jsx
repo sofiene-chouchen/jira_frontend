@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { jwt } from 'jwt-decode';
 import {
   IssueType,
   IssueStatus,
@@ -10,9 +11,9 @@ import {
 } from 'shared/constants/issues';
 import toast from 'shared/utils/toast';
 import useApi from 'shared/hooks/api';
-import useCurrentUser from 'shared/hooks/currentUser';
 import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon } from 'shared/components';
 
+import { getStoredAuthToken } from 'shared/utils/authToken';
 import {
   FormHeading,
   FormElement,
@@ -33,8 +34,9 @@ const propTypes = {
 const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => {
   const [{ isCreating }, createIssue] = useApi.post('/issues');
 
-  const { currentUserId } = useCurrentUser();
-
+  const token = getStoredAuthToken('authToken');
+  const user = jwt(token);
+  const { currentUserId } = user;
   return (
     <Form
       enableReinitialize

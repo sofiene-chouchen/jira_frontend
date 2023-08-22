@@ -26,7 +26,7 @@ const defaultFilters = {
 const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
   const match = useRouteMatch();
   const history = useHistory();
-
+  console.log('project -->', project);
   const [filters, mergeFilters] = useMergeState(defaultFilters);
 
   return (

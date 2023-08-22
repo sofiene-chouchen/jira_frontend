@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Redirect, useRouteMatch, useHistory } from 'react-router-dom';
 
 import useApi from 'shared/hooks/api';
@@ -17,16 +17,24 @@ import { ProjectPage } from './Styles';
 const Project = () => {
   const match = useRouteMatch();
   const history = useHistory();
+  const [project, setProject] = useState(null);
+  const [{ data, error, setLocalData }, fetchProject] = useApi.get('/project');
+
+  useEffect(() => {
+    if (data) {
+      setProject(data[0]);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    // console.log('project', project);
+  }, [project]);
 
   const issueSearchModalHelpers = createQueryParamModalHelpers('issue-search');
   const issueCreateModalHelpers = createQueryParamModalHelpers('issue-create');
 
-  const [{ data, error, setLocalData }, fetchProject] = useApi.get('/project');
-
   if (!data) return <PageLoader />;
   if (error) return <PageError />;
-
-  const { project } = data;
 
   const updateLocalProjectIssues = (issueId, updatedFields) => {
     setLocalData(currentData => ({
@@ -35,6 +43,7 @@ const Project = () => {
         issues: updateArrayItemById(currentData.project.issues, issueId, updatedFields),
       },
     }));
+    console.log('test --->', updateLocalProjectIssues);
   };
 
   return (
@@ -44,7 +53,7 @@ const Project = () => {
         issueCreateModalOpen={issueCreateModalHelpers.open}
       />
 
-      <Sidebar project={project} />
+      {project && <Sidebar project={project} />}
 
       {issueSearchModalHelpers.isOpen() && (
         <Modal
@@ -77,13 +86,15 @@ const Project = () => {
 
       <Route
         path={`${match.path}/board`}
-        render={() => (
-          <Board
-            project={project}
-            fetchProject={fetchProject}
-            updateLocalProjectIssues={updateLocalProjectIssues}
-          />
-        )}
+        render={() =>
+          project && (
+            <Board
+              project={project}
+              fetchProject={fetchProject}
+              updateLocalProjectIssues={updateLocalProjectIssues}
+            />
+          )
+        }
       />
 
       <Route
