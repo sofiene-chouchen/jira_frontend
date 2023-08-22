@@ -43,7 +43,6 @@ const Project = () => {
         issues: updateArrayItemById(currentData.project.issues, issueId, updatedFields),
       },
     }));
-    console.log('test --->', updateLocalProjectIssues);
   };
 
   return (

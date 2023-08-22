@@ -5,10 +5,10 @@ export const IssueType = {
 };
 
 export const IssueStatus = {
-  BACKLOG: 'backlog',
-  SELECTED: 'selected',
-  INPROGRESS: 'inprogress',
-  DONE: 'done',
+  BACKLOG: 'BACKLOG',
+  SELECTED: 'SELECTED',
+  INPROGRESS: 'INPROGRESS',
+  DONE: 'DONE',
 };
 
 export const IssuePriority = {

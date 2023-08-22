@@ -31,7 +31,7 @@ const propTypes = {
 const ProjectIssueSearch = ({ project }) => {
   const [isSearchTermEmpty, setIsSearchTermEmpty] = useState(true);
 
-  const [{ data, isLoading }, fetchIssues] = useApi.get('/issues', {}, { lazy: true });
+  const [{ data, isLoading }, fetchIssues] = useApi.get('/issue');
 
   const matchingIssues = get(data, 'issues', []);
 
@@ -55,7 +55,7 @@ const ProjectIssueSearch = ({ project }) => {
           placeholder="Search issues by summary, description..."
           onChange={handleSearchChange}
         />
-        <SearchIcon type="search" size={22} />
+        <SearchIcon type="search" size={20} />
         {isLoading && <SearchSpinner />}
       </SearchInputCont>
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { jwt } from 'jwt-decode';
 import {
@@ -23,13 +22,6 @@ import {
   Actions,
   ActionButton,
 } from './Styles';
-
-const propTypes = {
-  project: PropTypes.object.isRequired,
-  fetchProject: PropTypes.func.isRequired,
-  onCreate: PropTypes.func.isRequired,
-  modalClose: PropTypes.func.isRequired,
-};
 
 const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => {
   const [{ isCreating }, createIssue] = useApi.post('/issues');
@@ -169,7 +161,5 @@ const renderUser = project => ({ value: userId, removeOptionValue }) => {
     </SelectItem>
   );
 };
-
-ProjectIssueCreate.propTypes = propTypes;
 
 export default ProjectIssueCreate;
