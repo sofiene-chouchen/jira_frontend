@@ -37,11 +37,25 @@ export const ProjectCart = styled.div`
 
 export const ProjectName = styled.div`
   font-size: 12 px;
-  padding: 20px 0px 0px 20px;
+  padding: 20px 0px 5px 20px;
 `;
 export const SubName = styled.div`
   font-size: 10 px;
-  padding: 0px 0px 0px 20px;
+  padding: 0px 0px 5px 20px;
+`;
+export const NumberOfIssue = styled.div`
+  background-color: blue;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+`;
+export const TextDeco = styled.div`
+  color: white;
+  padding-left: 20px;
+`;
+export const NUmbe = styled.div`
+  color: white;
+  padding-right: 20px;
 `;
 
 export const NoProject = styled.div``;

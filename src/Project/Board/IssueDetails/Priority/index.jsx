@@ -15,20 +15,22 @@ const propTypes = {
 const ProjectBoardIssueDetailsPriority = ({ issue, updateIssue }) => (
   <Fragment>
     <SectionTitle>Priority</SectionTitle>
-    <Select
-      variant="empty"
-      withClearValue={false}
-      dropdownWidth={343}
-      name="priority"
-      value={issue.priority}
-      options={Object.values(IssuePriority).map(priority => ({
-        value: priority,
-        label: IssuePriorityCopy[priority],
-      }))}
-      onChange={priority => updateIssue({ priority })}
-      renderValue={({ value: priority }) => renderPriorityItem(priority, true)}
-      renderOption={({ value: priority }) => renderPriorityItem(priority)}
-    />
+    {issue && (
+      <Select
+        variant="empty"
+        withClearValue={false}
+        dropdownWidth={343}
+        name="priority"
+        value={issue.priority}
+        options={Object.values(IssuePriority).map(priority => ({
+          value: priority,
+          label: IssuePriorityCopy[priority],
+        }))}
+        onChange={priority => updateIssue({ priority })}
+        renderValue={({ value: priority }) => renderPriorityItem(priority, true)}
+        renderOption={({ value: priority }) => renderPriorityItem(priority)}
+      />
+    )}
   </Fragment>
 );
 

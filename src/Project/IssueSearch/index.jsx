@@ -32,11 +32,11 @@ const ProjectIssueSearch = ({ project }) => {
   const [isSearchTermEmpty, setIsSearchTermEmpty] = useState(true);
 
   const [{ data, isLoading }, fetchIssues] = useApi.get('/issue');
-
+  console.log(data);
   const matchingIssues = get(data, 'issues', []);
 
   const recentIssues = sortByNewest(project.issues, 'createdAt').slice(0, 10);
-
+  console.log(project);
   const handleSearchChange = value => {
     const searchTerm = value.trim();
 

@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { StyledIcon } from './Styles';
 
 const fontIconCodes = {
-  [`bug`]: '\\e90f',
+  [`BUG`]: '\\e90f',
   [`stopwatch`]: '\\e914',
-  [`task`]: '\\e910',
-  [`story`]: '\\e911',
+  [`TASK`]: '\\e910',
+  [`STORY`]: '\\e911',
   [`arrow-down`]: '\\e90a',
   [`arrow-left-circle`]: '\\e917',
   [`arrow-up`]: '\\e90b',

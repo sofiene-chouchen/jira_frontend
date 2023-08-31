@@ -1,7 +1,7 @@
 export const ProjectCategory = {
-  SOFTWARE: 'software',
-  MARKETING: 'marketing',
-  BUSINESS: 'business',
+  SOFTWARE: 'SOFTWARE',
+  MARKETING: 'MARKETING',
+  BUSINESS: 'BUSINESS',
 };
 
 export const ProjectCategoryCopy = {

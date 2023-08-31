@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { Avatar, Select, Icon } from 'shared/components';
+import { Avatar, Icon, Select } from 'shared/components';
 
 import { SectionTitle } from '../Styles';
 import { User, Username } from './Styles';
@@ -14,19 +14,17 @@ const propTypes = {
 
 const ProjectBoardIssueDetailsAssigneesReporter = ({ issue, updateIssue, projectUsers }) => {
   const getUserById = userId => projectUsers.find(user => user.id === userId);
-
   const userOptions = projectUsers.map(user => ({ value: user.id, label: user.name }));
 
   return (
     <Fragment>
       <SectionTitle>Assignees</SectionTitle>
       <Select
-        isMulti
         variant="empty"
         dropdownWidth={343}
-        placeholder="Unassigned"
+        // placeholder="Unassigned"
         name="assignees"
-        value={issue.userIds}
+        value={issue.user?.id}
         options={userOptions}
         onChange={userIds => {
           updateIssue({ userIds, users: userIds.map(getUserById) });
@@ -61,6 +59,7 @@ const renderUser = (user, isSelectValue, removeOptionValue) => (
     onClick={() => removeOptionValue && removeOptionValue()}
   >
     <Avatar avatarUrl={user.avatarUrl} name={user.name} size={24} />
+
     <Username>{user.name}</Username>
     {removeOptionValue && <Icon type="close" top={1} />}
   </User>

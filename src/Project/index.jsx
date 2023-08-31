@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Route, Redirect, useRouteMatch, useHistory } from 'react-router-dom';
+/* eslint-disable no-unused-expressions */
+import React, { useEffect, useState } from "react";
+import { Redirect, Route, useHistory, useRouteMatch } from "react-router-dom";
 
-import useApi from 'shared/hooks/api';
-import { updateArrayItemById } from 'shared/utils/javascript';
-import { createQueryParamModalHelpers } from 'shared/utils/queryParamModal';
-import { PageLoader, PageError, Modal } from 'shared/components';
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import useApi from "shared/hooks/api";
+import { updateArrayItemById } from "shared/utils/javascript";
+import { createQueryParamModalHelpers } from "shared/utils/queryParamModal";
+import { Modal, PageError, PageLoader } from "shared/components";
 
-import NavbarLeft from './NavbarLeft';
-import Sidebar from './Sidebar';
-import Board from './Board';
-import IssueSearch from './IssueSearch';
-import IssueCreate from './IssueCreate';
-import ProjectSettings from './ProjectSettings';
-import { ProjectPage } from './Styles';
+import NavbarLeft from "./NavbarLeft";
+import Sidebar from "./Sidebar";
+import Board from "./Board";
+import IssueSearch from "./IssueSearch";
+import IssueCreate from "./IssueCreate";
+import ProjectSettings from "./ProjectSettings";
+import { ProjectPage } from "./Styles";
 
 const Project = () => {
   const match = useRouteMatch();
   const history = useHistory();
+  const { id } = useParams();
   const [project, setProject] = useState(null);
-  const [{ data, error, setLocalData }, fetchProject] = useApi.get('/project');
-
+  const [{ data, error, setLocalData }, fetchProject] = useApi.get(`/project`);
+  // console.log("data--->" , data);
   useEffect(() => {
     if (data) {
       setProject(data[0]);
@@ -27,7 +30,6 @@ const Project = () => {
   }, [data]);
 
   useEffect(() => {
-    // console.log('project', project);
   }, [project]);
 
   const issueSearchModalHelpers = createQueryParamModalHelpers('issue-search');
@@ -37,12 +39,18 @@ const Project = () => {
   if (error) return <PageError />;
 
   const updateLocalProjectIssues = (issueId, updatedFields) => {
-    setLocalData(currentData => ({
-      project: {
-        ...currentData.project,
-        issues: updateArrayItemById(currentData.project.issues, issueId, updatedFields),
-      },
-    }));
+    console.log(updatedFields);
+    setLocalData(currentData => {
+      // console.log('current data', currentData);
+      // console.log(' issues', currentData[0].issues);
+
+      return {
+        project: {
+          ...currentData,
+          issues: updateArrayItemById(currentData.issues, issueId, updatedFields),
+        },
+      };
+    });
   };
 
   return (
@@ -61,7 +69,9 @@ const Project = () => {
           variant="aside"
           width={600}
           onClose={issueSearchModalHelpers.close}
-          renderContent={() => <IssueSearch project={project} />}
+          renderContent={() => {
+            project && <IssueSearch project={project} />;
+          }}
         />
       )}
 

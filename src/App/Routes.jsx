@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Switch, Route, Redirect } from 'react-router-dom';
+import { Redirect, Route, Router, Switch } from 'react-router-dom';
 import '../index.css';
 import history from 'browserHistory';
 import Project from 'Project';
@@ -12,9 +12,9 @@ import Dashboard from 'Project/Dashboard';
 const Routes = () => (
   <Router history={history}>
     <Switch>
-      <Redirect exact from="/" to="/project" />
+      <Redirect exact from="/" to="/dashboard" />
       <Route path="/authenticate" component={Authenticate} />
-      <Route path="/project" component={Project} />
+      <Route path="/project/:id" component={Project} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/dashboard" component={Dashboard} />

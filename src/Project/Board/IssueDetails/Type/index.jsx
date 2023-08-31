@@ -10,7 +10,6 @@ const propTypes = {
   issue: PropTypes.object.isRequired,
   updateIssue: PropTypes.func.isRequired,
 };
-
 const ProjectBoardIssueDetailsType = ({ issue, updateIssue }) => (
   <Select
     variant="empty"

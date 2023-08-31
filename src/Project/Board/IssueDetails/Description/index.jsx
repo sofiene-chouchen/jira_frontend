@@ -6,15 +6,9 @@ import { TextEditor, TextEditedContent, Button } from 'shared/components';
 
 import { Title, EmptyLabel, Actions } from './Styles';
 
-const propTypes = {
-  issue: PropTypes.object.isRequired,
-  updateIssue: PropTypes.func.isRequired,
-};
-
 const ProjectBoardIssueDetailsDescription = ({ issue, updateIssue }) => {
-  const [description, setDescription] = useState(issue.description);
+  const [description, setDescription] = useState(issue);
   const [isEditing, setEditing] = useState(false);
-
   const handleUpdate = () => {
     setEditing(false);
     updateIssue({ description });
@@ -53,7 +47,5 @@ const ProjectBoardIssueDetailsDescription = ({ issue, updateIssue }) => {
     </Fragment>
   );
 };
-
-ProjectBoardIssueDetailsDescription.propTypes = propTypes;
 
 export default ProjectBoardIssueDetailsDescription;

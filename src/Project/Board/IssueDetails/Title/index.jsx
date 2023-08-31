@@ -2,9 +2,9 @@ import React, { Fragment, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { KeyCodes } from 'shared/constants/keyCodes';
-import { is, generateErrors } from 'shared/utils/validation';
+import { generateErrors, is } from 'shared/utils/validation';
 
-import { TitleTextarea, ErrorText } from './Styles';
+import { ErrorText, TitleTextarea } from './Styles';
 
 const propTypes = {
   issue: PropTypes.object.isRequired,

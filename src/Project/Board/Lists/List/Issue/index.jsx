@@ -14,11 +14,7 @@ const propTypes = {
 };
 
 const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
-  console.log('issues ->>>', issue);
   const match = useRouteMatch();
-
-  const assignees = projectUsers.find(user => user?.id === issue?.user?.id);
-  // const assignees = [];
   return (
     <Draggable draggableId={issue.id.toString()} index={index}>
       {(provided, snapshot) => (
