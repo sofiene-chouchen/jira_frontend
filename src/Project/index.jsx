@@ -1,20 +1,20 @@
 /* eslint-disable no-unused-expressions */
-import React, { useEffect, useState } from "react";
-import { Redirect, Route, useHistory, useRouteMatch } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Redirect, Route, useHistory, useRouteMatch } from 'react-router-dom';
 
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import useApi from "shared/hooks/api";
-import { updateArrayItemById } from "shared/utils/javascript";
-import { createQueryParamModalHelpers } from "shared/utils/queryParamModal";
-import { Modal, PageError, PageLoader } from "shared/components";
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import useApi from 'shared/hooks/api';
+import { updateArrayItemById } from 'shared/utils/javascript';
+import { createQueryParamModalHelpers } from 'shared/utils/queryParamModal';
+import { Modal, PageError, PageLoader } from 'shared/components';
 
-import NavbarLeft from "./NavbarLeft";
-import Sidebar from "./Sidebar";
-import Board from "./Board";
-import IssueSearch from "./IssueSearch";
-import IssueCreate from "./IssueCreate";
-import ProjectSettings from "./ProjectSettings";
-import { ProjectPage } from "./Styles";
+import NavbarLeft from './NavbarLeft';
+import Sidebar from './Sidebar';
+import Board from './Board';
+import IssueSearch from './IssueSearch';
+import IssueCreate from './IssueCreate';
+import ProjectSettings from './ProjectSettings';
+import { ProjectPage } from './Styles';
 
 const Project = () => {
   const match = useRouteMatch();
@@ -22,15 +22,13 @@ const Project = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
   const [{ data, error, setLocalData }, fetchProject] = useApi.get(`/project`);
-  // console.log("data--->" , data);
   useEffect(() => {
     if (data) {
       setProject(data[0]);
     }
   }, [data]);
 
-  useEffect(() => {
-  }, [project]);
+  useEffect(() => {}, [project]);
 
   const issueSearchModalHelpers = createQueryParamModalHelpers('issue-search');
   const issueCreateModalHelpers = createQueryParamModalHelpers('issue-create');
@@ -41,9 +39,6 @@ const Project = () => {
   const updateLocalProjectIssues = (issueId, updatedFields) => {
     console.log(updatedFields);
     setLocalData(currentData => {
-      // console.log('current data', currentData);
-      // console.log(' issues', currentData[0].issues);
-
       return {
         project: {
           ...currentData,

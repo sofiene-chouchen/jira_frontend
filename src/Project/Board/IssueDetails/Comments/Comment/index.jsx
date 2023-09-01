@@ -30,7 +30,7 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
 
   const handleCommentDelete = async () => {
     try {
-      await api.delete(`/comments/${comment.id}`);
+      await api.delete(`/comment/${comment.id}`);
       await fetchIssue();
     } catch (error) {
       toast.error(error);
@@ -40,7 +40,7 @@ const ProjectBoardIssueDetailsComment = ({ comment, fetchIssue }) => {
   const handleCommentUpdate = async () => {
     try {
       setUpdating(true);
-      await api.put(`/comments/${comment.id}`, { body });
+      await api.put(`/comment/${comment.id}`, { body });
       await fetchIssue();
       setUpdating(false);
       setFormOpen(false);

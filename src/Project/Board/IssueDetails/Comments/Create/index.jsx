@@ -16,10 +16,15 @@ const ProjectBoardIssueDetailsCommentsCreate = ({ issueId, fetchIssue }) => {
 
   const token = getStoredAuthToken('authToken');
   const currentUser = jwt(token);
+  const data = {
+    body,
+    issues: issueId,
+    user: currentUser.id,
+  };
   const handleCommentCreate = async () => {
     try {
       setCreating(true);
-      await api.post(`/comments`, { body, issueId, userId: currentUser.id });
+      await api.post(`/comment`, data);
       await fetchIssue();
       setFormOpen(false);
       setCreating(false);
