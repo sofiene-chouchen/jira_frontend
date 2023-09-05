@@ -23,31 +23,38 @@ export const Button = styled.button`
   color: white;
   padding: 7px;
   border-radius: 7px;
+
   &:hover {
     box-shadow: 5px 10px 30px 0px rgba(9, 30, 66, 0.15);
   }
+
+  cursor: pointer;
 `;
 
 export const ProjectCart = styled.div`
-  width: 237px;
-  height: 200px;
+  width: 250px;
+  height: 150px;
   border-radius: 7px;
   box-shadow: 1px 3px 3px 1px gray;
 `;
-
+export const Projects = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+`;
 export const ProjectName = styled.div`
-  font-size: 12 px;
-  padding: 20px 0px 5px 20px;
+  font-size: 15px;
+  padding: 20px 0px 10px 20px;
 `;
 export const SubName = styled.div`
-  font-size: 10 px;
-  padding: 0px 0px 5px 20px;
+  font-size: 15px;
+  padding: 0px 0px 7px 20px;
 `;
 export const NumberOfIssue = styled.div`
   background-color: blue;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 `;
 export const TextDeco = styled.div`
   color: white;
@@ -75,6 +82,7 @@ export const Buttons = styled.button`
   padding: 7px;
   text-align: center;
   border-radius: 7px;
+
   &:hover {
     box-shadow: 5px 10px 30px 0px rgba(9, 30, 66, 0.15);
   }

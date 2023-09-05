@@ -8,7 +8,7 @@ const ProjectBoardHeader = () => (
   <Header>
     <BoardName>Kanban board</BoardName>
     <a href="https://github.com/oldboyxx/jira_clone" target="_blank" rel="noreferrer noopener">
-      <Button icon="github">Github Repo</Button>
+      <Button icon="user">Add User</Button>
     </a>
   </Header>
 );

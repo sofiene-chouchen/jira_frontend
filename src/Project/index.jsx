@@ -21,10 +21,11 @@ const Project = () => {
   const history = useHistory();
   const { id } = useParams();
   const [project, setProject] = useState(null);
-  const [{ data, error, setLocalData }, fetchProject] = useApi.get(`/project`);
+  console.log(id);
+  const [{ data, error, setLocalData }, fetchProject] = useApi.get(`/project/${id}`);
   useEffect(() => {
     if (data) {
-      setProject(data[0]);
+      setProject(data);
     }
   }, [data]);
 
@@ -77,14 +78,16 @@ const Project = () => {
           width={800}
           withCloseIcon={false}
           onClose={issueCreateModalHelpers.close}
-          renderContent={modal => (
-            <IssueCreate
-              project={project}
-              fetchProject={fetchProject}
-              onCreate={() => history.push(`${match.url}/board`)}
-              modalClose={modal.close}
-            />
-          )}
+          renderContent={modal =>
+            data && (
+              <IssueCreate
+                project={project}
+                fetchProject={fetchProject}
+                onCreate={() => history.push(`${match.url}/board`)}
+                modalClose={modal.close}
+              />
+            )
+          }
         />
       )}
 

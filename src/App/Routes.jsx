@@ -8,6 +8,8 @@ import Register from 'Project/Register/index';
 import Authenticate from 'Auth/Authenticate';
 import PageError from 'shared/components/PageError';
 import Dashboard from 'Project/Dashboard';
+import AddProject from 'Project/ProjectCreate/Index';
+import Users from 'Project/Dashboard/Users/Index';
 
 const Routes = () => (
   <Router history={history}>
@@ -18,6 +20,8 @@ const Routes = () => (
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/addProject" component={AddProject} />
+      <Route path="/users" component={Users} />
       <Route component={PageError} />
     </Switch>
   </Router>

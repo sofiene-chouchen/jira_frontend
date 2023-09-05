@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const NavBar = styled.div`
   width: 100%;
-  height: 38.8 px;
+  height: 38.8px;
   background-color: white;
   border-bottom: 0.5px solid #d9d9d9;
 `;
@@ -26,6 +26,7 @@ export const Links = styled.div`
 export const LinksItems = styled.div`
   padding-bottom: 3px;
   margin-right: 50px;
+
   &:hover {
     bottom: 0;
     color: blue;

@@ -1,8 +1,9 @@
 import React from 'react';
 import jwt from 'jwt-decode';
+import { Link } from 'react-router-dom';
 import { Avatar } from 'shared/components';
 import { getStoredAuthToken } from 'shared/utils/authToken';
-import { Container, NavBar, Logo, User } from './Style';
+import { Container, Links, LinksItems, Logo, NavBar, User } from './Style';
 
 export default function NavBare() {
   const token = getStoredAuthToken('authToken');
@@ -11,15 +12,19 @@ export default function NavBare() {
     <div>
       <NavBar>
         <Container>
-          <Logo>Jira proxymIT</Logo>
-
+          <Link to="/dashboard">
+            <Logo>Jira proxymIT</Logo>
+          </Link>
+          <Links>
+            <Link to="/users">
+              <LinksItems>users</LinksItems>
+            </Link>
+          </Links>
           <User>
-            <Avatar size={20} avatarUrl="" name={user.name} AboutTooltip />
+            <Avatar size={23} avatarUrl="" name={user.name} AboutTooltip />
           </User>
         </Container>
       </NavBar>
     </div>
   );
 }
-
-// equipe && project ===> user data

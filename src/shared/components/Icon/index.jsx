@@ -36,6 +36,7 @@ const fontIconCodes = {
   [`calendar`]: '\\e91d',
   [`arrow-left`]: '\\e91e',
   [`arrow-right`]: '\\e91f',
+  [`user`]: '\u{1F468}',
 };
 
 const propTypes = {
