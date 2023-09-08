@@ -25,7 +25,6 @@ const ProjectBoardIssueDetails = ({
   modalClose,
 }) => {
   const [{ data, error, setLocalData }, fetchIssue] = useApi.get(`/issues/${issueId}`);
-  console.log(data);
   if (!data) return <Loader />;
   if (error) return <PageError />;
 

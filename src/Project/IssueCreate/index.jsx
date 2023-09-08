@@ -25,10 +25,10 @@ import {
 
 const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => {
   const [{ isCreating }, createIssue] = useApi.post('/issues');
-  console.log(project);
   const token = getStoredAuthToken('authToken');
   const user = jwt(token);
   const currentUserId = user.id;
+  console.log(project);
   return (
     <Form
       enableReinitialize
@@ -52,7 +52,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
             ...values,
             status: IssueStatus.BACKLOG,
             projectId: project.id,
-            users: values.user.id.map(id => ({ id })),
+            users: values.users.id,
           });
           await fetchProject();
           toast.success('Issue has been successfully created.');
@@ -91,7 +91,6 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
           renderValue={renderUser(project)}
         />
         <Form.Field.Select
-          isMulti
           name="userIds"
           label="Assignees"
           tio="People who are responsible for dealing with this issue."
@@ -130,7 +129,7 @@ const priorityOptions = Object.values(IssuePriority).map(priority => ({
   label: IssuePriorityCopy[priority],
 }));
 
-const userOptions = project => project.user.map(user => ({ value: user.id, label: user.name }));
+const userOptions = project => project?.users?.map(user => ({ value: user.id, label: user.name }));
 
 const renderType = ({ value: type }) => (
   <SelectItem>
@@ -147,7 +146,7 @@ const renderPriority = ({ value: priority }) => (
 );
 
 const renderUser = project => ({ value: userId, removeOptionValue }) => {
-  const user = project.user.find(({ id }) => id === userId);
+  const user = project?.users?.find(({ id }) => id === userId);
 
   return (
     <SelectItem

@@ -10,6 +10,7 @@ import PageError from 'shared/components/PageError';
 import Dashboard from 'Project/Dashboard';
 import AddProject from 'Project/ProjectCreate/Index';
 import Users from 'Project/Dashboard/Users/Index';
+import UserCreation from 'Project/Dashboard/Users/userCreation/Index';
 
 const Routes = () => (
   <Router history={history}>
@@ -22,6 +23,7 @@ const Routes = () => (
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/addProject" component={AddProject} />
       <Route path="/users" component={Users} />
+      <Route path="/userCreation" component={UserCreation} />
       <Route component={PageError} />
     </Switch>
   </Router>

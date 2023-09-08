@@ -14,6 +14,7 @@ import {
   NUmbe,
   NumberOfIssue,
   ProjectCart,
+  ProjectList,
   ProjectName,
   Projects,
   SubName,
@@ -25,12 +26,9 @@ import {
 export default function ProjectUser() {
   const token = getStoredAuthToken('authToken');
   const user = jwt(token);
-  console.log(user);
   const [data, error] = useApi.get('/project');
   const projects = data.data;
   if (!projects) return <PageLoader />;
-
-  const userIssuesCount = projects[0]?.issues?.filter(issue => issue?.user?.id === user.id).length;
 
   return (
     <div>
@@ -44,24 +42,28 @@ export default function ProjectUser() {
           ) : null}
         </Header>
         {projects ? (
-          projects.map((
-            project, // Removed curly braces here
-          ) => (
-            <ProjectCart>
-              <Link to={`/project/${project.id}`} key={project.id}>
-                <ProjectName>Nom: {project.name}</ProjectName>
-                <SubName> Type: {project.category?.toLowerCase()}</SubName>
-                <NumberOfIssue>
-                  <TextDeco>Number of Issue for me :</TextDeco>
-                  <NUmbe>{userIssuesCount}</NUmbe>
-                </NumberOfIssue>
-                <NumberOfIssue>
-                  <TextDeco>Number of Issue :</TextDeco>
-                  <NUmbe>{project.issues?.length}</NUmbe>
-                </NumberOfIssue>
-              </Link>
-            </ProjectCart>
-          ))
+          <ProjectList>
+            {projects.map(project => (
+              <ProjectCart key={project.id}>
+                <Link to={`/project/${project.id}`}>
+                  <ProjectName>Nom: {project.name}</ProjectName>
+                  <SubName> Type: {project.category?.toLowerCase()}</SubName>
+                  <NumberOfIssue>
+                    <TextDeco>Number of Issue for me :</TextDeco>
+                    <NUmbe>
+                      {project.issues
+                        ? project.issues.filter(issue => issue?.user?.id === user.id).length
+                        : 0}
+                    </NUmbe>
+                  </NumberOfIssue>
+                  <NumberOfIssue>
+                    <TextDeco>Number of Issue :</TextDeco>
+                    <NUmbe>{project.issues?.length || 0}</NUmbe>
+                  </NumberOfIssue>
+                </Link>
+              </ProjectCart>
+            ))}
+          </ProjectList>
         ) : (
           <NoProject>
             <Image>

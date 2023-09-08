@@ -41,3 +41,14 @@ export const User = styled.div`
   right: 120px;
   top: 8px;
 `;
+export const ProfileDropdown = styled.div`
+  position: absolute;
+  right: 0;
+  top: 38.8px; /* Adjust the top position to align with the avatar */
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid #d9d9d9;
+  padding: 10px;
+  z-index: 1;
+  cursor: pointer;
+`;

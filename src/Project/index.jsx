@@ -21,7 +21,6 @@ const Project = () => {
   const history = useHistory();
   const { id } = useParams();
   const [project, setProject] = useState(null);
-  console.log(id);
   const [{ data, error, setLocalData }, fetchProject] = useApi.get(`/project/${id}`);
   useEffect(() => {
     if (data) {
@@ -38,7 +37,6 @@ const Project = () => {
   if (error) return <PageError />;
 
   const updateLocalProjectIssues = (issueId, updatedFields) => {
-    console.log(updatedFields);
     setLocalData(currentData => {
       return {
         project: {
@@ -79,7 +77,7 @@ const Project = () => {
           withCloseIcon={false}
           onClose={issueCreateModalHelpers.close}
           renderContent={modal =>
-            data && (
+            project && (
               <IssueCreate
                 project={project}
                 fetchProject={fetchProject}

@@ -86,4 +86,11 @@ export const Buttons = styled.button`
   &:hover {
     box-shadow: 5px 10px 30px 0px rgba(9, 30, 66, 0.15);
   }
+
+  cursor: pointer;
+`;
+export const ProjectList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 `;

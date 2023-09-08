@@ -37,7 +37,7 @@ const ProjectBoardList = ({ status, project, filters, currentUserId }) => {
             ref={provided.innerRef}
             data-testid={`board-list:${status}`}
           >
-            {filteredListIssues.map((issue, index) => (
+            {filteredListIssues?.map((issue, index) => (
               <Issue key={issue.id} projectUsers={project.users} issue={issue} index={index} />
             ))}
             {provided.placeholder}
@@ -70,13 +70,13 @@ const filterIssues = (projectIssues, filters, currentUserId) => {
 };
 
 const getSortedListIssues = (issues, status) =>
-  issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
+  issues?.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
 
 const formatIssuesCount = (allListIssues, filteredListIssues) => {
-  if (allListIssues.length !== filteredListIssues.length) {
-    return `${filteredListIssues.length} of ${allListIssues.length}`;
+  if (allListIssues?.length !== filteredListIssues?.length) {
+    return `${filteredListIssues?.length} of ${allListIssues?.length}`;
   }
-  return allListIssues.length;
+  return allListIssues?.length;
 };
 
 ProjectBoardList.propTypes = propTypes;
