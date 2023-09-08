@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { DragDropContext } from 'react-beautiful-dnd';
 
-import useCurrentUser from 'shared/hooks/currentUser';
+import jwt from 'jwt-decode';
 import api from 'shared/utils/api';
 import { moveItemWithinArray, insertItemIntoArray } from 'shared/utils/javascript';
 import { IssueStatus } from 'shared/constants/issues';
 
 import List from './List';
 import { Lists } from './Styles';
+import { getStoredAuthToken } from '../../../shared/utils/authToken';
 
 const propTypes = {
   project: PropTypes.object.isRequired,
@@ -16,9 +18,10 @@ const propTypes = {
   updateLocalProjectIssues: PropTypes.func.isRequired,
 };
 
-const ProjectBoardLists = ({ project, filters, updateLocalProjectIssues }) => {
-  const { currentUserId } = useCurrentUser();
+const TOKEN = getStoredAuthToken('authToken');
+const user = jwt(TOKEN);
 
+const ProjectBoardLists = ({ project, filters, updateLocalProjectIssues }) => {
   const handleIssueDrop = ({ draggableId, destination, source }) => {
     if (!isPositionChanged(source, destination)) return;
 
@@ -33,7 +36,7 @@ const ProjectBoardLists = ({ project, filters, updateLocalProjectIssues }) => {
       setLocalData: fields => updateLocalProjectIssues(issueId, fields),
     });
   };
-
+  // console.log('test-->', project);
   return (
     <DragDropContext onDragEnd={handleIssueDrop}>
       <Lists>
@@ -43,7 +46,7 @@ const ProjectBoardLists = ({ project, filters, updateLocalProjectIssues }) => {
             status={status}
             project={project}
             filters={filters}
-            currentUserId={currentUserId}
+            currentUserId={user?.id}
           />
         ))}
       </Lists>
@@ -91,7 +94,6 @@ const getAfterDropPrevNextIssue = (allIssues, destination, source, droppedIssueI
 
 const getSortedListIssues = (issues, status) =>
   issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
-
 ProjectBoardLists.propTypes = propTypes;
 
 export default ProjectBoardLists;

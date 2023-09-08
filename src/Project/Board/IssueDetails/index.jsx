@@ -1,30 +1,21 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 
 import api from 'shared/utils/api';
 import useApi from 'shared/hooks/api';
-import { PageError, CopyLinkButton, Button, AboutTooltip } from 'shared/components';
+import { AboutTooltip, Button, CopyLinkButton, PageError } from 'shared/components';
 
 import Loader from './Loader';
 import Type from './Type';
 import Delete from './Delete';
 import Title from './Title';
 import Description from './Description';
-import Comments from './Comments';
 import Status from './Status';
 import AssigneesReporter from './AssigneesReporter';
 import Priority from './Priority';
 import EstimateTracking from './EstimateTracking';
 import Dates from './Dates';
-import { TopActions, TopActionsRight, Content, Left, Right } from './Styles';
-
-const propTypes = {
-  issueId: PropTypes.string.isRequired,
-  projectUsers: PropTypes.array.isRequired,
-  fetchProject: PropTypes.func.isRequired,
-  updateLocalProjectIssues: PropTypes.func.isRequired,
-  modalClose: PropTypes.func.isRequired,
-};
+import { Content, Left, Right, TopActions, TopActionsRight } from './Styles';
+import Comments from './Comments';
 
 const ProjectBoardIssueDetails = ({
   issueId,
@@ -34,11 +25,8 @@ const ProjectBoardIssueDetails = ({
   modalClose,
 }) => {
   const [{ data, error, setLocalData }, fetchIssue] = useApi.get(`/issues/${issueId}`);
-
   if (!data) return <Loader />;
   if (error) return <PageError />;
-
-  const { issue } = data;
 
   const updateLocalIssueDetails = fields =>
     setLocalData(currentData => ({ issue: { ...currentData.issue, ...fields } }));
@@ -46,10 +34,10 @@ const ProjectBoardIssueDetails = ({
   const updateIssue = updatedFields => {
     api.optimisticUpdate(`/issues/${issueId}`, {
       updatedFields,
-      currentFields: issue,
+      currentFields: data,
       setLocalData: fields => {
         updateLocalIssueDetails(fields);
-        updateLocalProjectIssues(issue.id, fields);
+        updateLocalProjectIssues(data.id, fields);
       },
     });
   };
@@ -57,7 +45,7 @@ const ProjectBoardIssueDetails = ({
   return (
     <Fragment>
       <TopActions>
-        <Type issue={issue} updateIssue={updateIssue} />
+        <Type issue={data} updateIssue={updateIssue} />
         <TopActionsRight>
           <AboutTooltip
             renderLink={linkProps => (
@@ -67,28 +55,27 @@ const ProjectBoardIssueDetails = ({
             )}
           />
           <CopyLinkButton variant="empty" />
-          <Delete issue={issue} fetchProject={fetchProject} modalClose={modalClose} />
+          <Delete issue={data} fetchProject={fetchProject} modalClose={modalClose} />
           <Button icon="close" iconSize={24} variant="empty" onClick={modalClose} />
         </TopActionsRight>
       </TopActions>
       <Content>
         <Left>
-          <Title issue={issue} updateIssue={updateIssue} />
-          <Description issue={issue} updateIssue={updateIssue} />
-          <Comments issue={issue} fetchIssue={fetchIssue} />
+          {data && <Title issue={data} updateIssue={updateIssue} />}
+          {data && <Description issue={data.description} updateIssue={updateIssue} />}
+
+          {data && <Comments issue={data} fetchIssue={fetchIssue} />}
         </Left>
         <Right>
-          <Status issue={issue} updateIssue={updateIssue} />
-          <AssigneesReporter issue={issue} updateIssue={updateIssue} projectUsers={projectUsers} />
-          <Priority issue={issue} updateIssue={updateIssue} />
-          <EstimateTracking issue={issue} updateIssue={updateIssue} />
-          <Dates issue={issue} />
+          <Status issue={data} updateIssue={updateIssue} />
+          <AssigneesReporter issue={data} updateIssue={updateIssue} projectUsers={projectUsers} />
+          <Priority issue={data} updateIssue={updateIssue} />
+          <EstimateTracking issue={data} updateIssue={updateIssue} />
+          <Dates issue={data} />
         </Right>
       </Content>
     </Fragment>
   );
 };
-
-ProjectBoardIssueDetails.propTypes = propTypes;
 
 export default ProjectBoardIssueDetails;

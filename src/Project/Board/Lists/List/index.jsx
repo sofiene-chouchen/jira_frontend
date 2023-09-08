@@ -7,7 +7,7 @@ import { intersection } from 'lodash';
 import { IssueStatusCopy } from 'shared/constants/issues';
 
 import Issue from './Issue';
-import { List, Title, IssuesCount, Issues } from './Styles';
+import { Issues, IssuesCount, List, Title } from './Styles';
 
 const propTypes = {
   status: PropTypes.string.isRequired,
@@ -24,7 +24,6 @@ const ProjectBoardList = ({ status, project, filters, currentUserId }) => {
   const filteredIssues = filterIssues(project.issues, filters, currentUserId);
   const filteredListIssues = getSortedListIssues(filteredIssues, status);
   const allListIssues = getSortedListIssues(project.issues, status);
-
   return (
     <Droppable key={status} droppableId={status}>
       {provided => (
@@ -38,7 +37,7 @@ const ProjectBoardList = ({ status, project, filters, currentUserId }) => {
             ref={provided.innerRef}
             data-testid={`board-list:${status}`}
           >
-            {filteredListIssues.map((issue, index) => (
+            {filteredListIssues?.map((issue, index) => (
               <Issue key={issue.id} projectUsers={project.users} issue={issue} index={index} />
             ))}
             {provided.placeholder}
@@ -57,10 +56,12 @@ const filterIssues = (projectIssues, filters, currentUserId) => {
     issues = issues.filter(issue => issue.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }
   if (userIds.length > 0) {
-    issues = issues.filter(issue => intersection(issue.userIds, userIds).length > 0);
+    issues = issues.filter(issue => intersection(issue.user?.id, userIds));
+    // console.log(issues);
   }
   if (myOnly && currentUserId) {
-    issues = issues.filter(issue => issue.userIds.includes(currentUserId));
+    issues = issues.filter(issue => issue.user?.id === currentUserId);
+    // console.log(issues);
   }
   if (recent) {
     issues = issues.filter(issue => moment(issue.updatedAt).isAfter(moment().subtract(3, 'days')));
@@ -69,13 +70,13 @@ const filterIssues = (projectIssues, filters, currentUserId) => {
 };
 
 const getSortedListIssues = (issues, status) =>
-  issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
+  issues?.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
 
 const formatIssuesCount = (allListIssues, filteredListIssues) => {
-  if (allListIssues.length !== filteredListIssues.length) {
-    return `${filteredListIssues.length} of ${allListIssues.length}`;
+  if (allListIssues?.length !== filteredListIssues?.length) {
+    return `${filteredListIssues?.length} of ${allListIssues?.length}`;
   }
-  return allListIssues.length;
+  return allListIssues?.length;
 };
 
 ProjectBoardList.propTypes = propTypes;

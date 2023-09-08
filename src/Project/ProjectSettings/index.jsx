@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { ProjectCategory, ProjectCategoryCopy } from 'shared/constants/projects';
 import toast from 'shared/utils/toast';
 import useApi from 'shared/hooks/api';
-import { Form, Breadcrumbs } from 'shared/components';
+import { Breadcrumbs, Form } from 'shared/components';
 
-import { FormCont, FormHeading, FormElement, ActionButton } from './Styles';
+import { ActionButton, FormCont, FormElement, FormHeading } from './Styles';
 
 const propTypes = {
   project: PropTypes.object.isRequired,

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { IssueStatus, IssueStatusCopy } from 'shared/constants/issues';
-import { Select, Icon } from 'shared/components';
+import { Icon, Select } from 'shared/components';
 
 import { SectionTitle } from '../Styles';
 import { Status } from './Styles';

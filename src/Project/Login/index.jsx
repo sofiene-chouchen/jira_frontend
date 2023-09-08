@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 import '../../index.css';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import {
-  Background,
-  Card,
-  LoginField,
-  Button,
-  CenteredContainer,
-  LoginTitle,
-  Links,
-} from './Style';
+import { Background, Card, LoginField, Button, CenteredContainer, LoginTitle } from './Style';
 
 export default function index() {
   const [email, setEmail] = useState('');
@@ -22,15 +14,14 @@ export default function index() {
       email,
       password,
     };
-
     axios
-      .post('http://localhost:8080/api/v1/auth/login', LoginData)
+      .post('http://localhost:8081/api/v1/auth/login', LoginData)
       .then(response => {
         if (response.status === 200) {
           const receivedToken = response.data.token;
           localStorage.setItem('authToken', receivedToken);
 
-          history.push('/register');
+          history.push(`/dashboard`);
         } else {
           console.log('Login failed');
         }
@@ -58,12 +49,6 @@ export default function index() {
             onChange={e => setPassword(e.target.value)}
           />
           <Button onClick={handleLogin}>Login</Button>
-          <span>
-            New here?
-            <Link to="/register">
-              <Links> Register </Links>
-            </Link>
-          </span>
         </Card>
       </CenteredContainer>
     </Background>

@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
+import jwt from 'jwt-decode';
 import {
   IssueType,
   IssueStatus,
@@ -10,9 +10,9 @@ import {
 } from 'shared/constants/issues';
 import toast from 'shared/utils/toast';
 import useApi from 'shared/hooks/api';
-import useCurrentUser from 'shared/hooks/currentUser';
 import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon } from 'shared/components';
 
+import { getStoredAuthToken } from 'shared/utils/authToken';
 import {
   FormHeading,
   FormElement,
@@ -23,18 +23,12 @@ import {
   ActionButton,
 } from './Styles';
 
-const propTypes = {
-  project: PropTypes.object.isRequired,
-  fetchProject: PropTypes.func.isRequired,
-  onCreate: PropTypes.func.isRequired,
-  modalClose: PropTypes.func.isRequired,
-};
-
 const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => {
   const [{ isCreating }, createIssue] = useApi.post('/issues');
-
-  const { currentUserId } = useCurrentUser();
-
+  const token = getStoredAuthToken('authToken');
+  const user = jwt(token);
+  const currentUserId = user.id;
+  console.log(project);
   return (
     <Form
       enableReinitialize
@@ -43,7 +37,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
         title: '',
         description: '',
         reporterId: currentUserId,
-        userIds: [],
+        userIds: 0,
         priority: IssuePriority.MEDIUM,
       }}
       validations={{
@@ -58,7 +52,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
             ...values,
             status: IssueStatus.BACKLOG,
             projectId: project.id,
-            users: values.userIds.map(id => ({ id })),
+            users: values.users.id,
           });
           await fetchProject();
           toast.success('Issue has been successfully created.');
@@ -97,7 +91,6 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
           renderValue={renderUser(project)}
         />
         <Form.Field.Select
-          isMulti
           name="userIds"
           label="Assignees"
           tio="People who are responsible for dealing with this issue."
@@ -136,7 +129,7 @@ const priorityOptions = Object.values(IssuePriority).map(priority => ({
   label: IssuePriorityCopy[priority],
 }));
 
-const userOptions = project => project.users.map(user => ({ value: user.id, label: user.name }));
+const userOptions = project => project?.users?.map(user => ({ value: user.id, label: user.name }));
 
 const renderType = ({ value: type }) => (
   <SelectItem>
@@ -153,7 +146,7 @@ const renderPriority = ({ value: priority }) => (
 );
 
 const renderUser = project => ({ value: userId, removeOptionValue }) => {
-  const user = project.users.find(({ id }) => id === userId);
+  const user = project?.users?.find(({ id }) => id === userId);
 
   return (
     <SelectItem
@@ -167,7 +160,5 @@ const renderUser = project => ({ value: userId, removeOptionValue }) => {
     </SelectItem>
   );
 };
-
-ProjectIssueCreate.propTypes = propTypes;
 
 export default ProjectIssueCreate;

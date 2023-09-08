@@ -1,16 +1,98 @@
-import React from 'react';
-
+import React, { useState, useEffect } from 'react'; // Import useEffect
+import jwt from 'jwt-decode';
+import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { Button } from 'shared/components';
+import useApi from 'shared/hooks/api';
 
-import { Header, BoardName } from './Styles';
+import Modal from 'shared/components/Modal';
+import { BoardName, Header, ModelContents } from './Styles';
+import { getStoredAuthToken } from '../../../shared/utils/authToken';
+import { Buttons, Label, Selector } from '../../ProjectCreate/Styles';
+import axios from 'axios';
+import toast from '../../../shared/utils/toast';
 
-const ProjectBoardHeader = () => (
-  <Header>
-    <BoardName>Kanban board</BoardName>
-    <a href="https://github.com/oldboyxx/jira_clone" target="_blank" rel="noreferrer noopener">
-      <Button icon="github">Github Repo</Button>
-    </a>
-  </Header>
-);
+const token = getStoredAuthToken('authToken');
+const user = jwt(token);
+
+const ProjectBoardHeader = () => {
+  const history = useHistory();
+  const { id } = useParams();
+  const match = useRouteMatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userToAssignet, setUserToAssignet] = useState([]);
+  const [data, error] = useApi.get('/user');
+  const [dataProject, projectError] = useApi.get(`/project/${id}`);
+  const users = data?.data;
+  const usersProject = dataProject?.data.users;
+  const UserNotAssigned = users?.filter(user => {
+    return !usersProject.some(projectUser => projectUser.name === user.name);
+  });
+
+  const dataToPass = {
+    projectId: parseInt(id),
+    userId: userToAssignet,
+  };
+
+  const addUser = () => {
+    const response = axios.put('http://localhost:8081/api/v1/project', dataToPass, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.status === 200) {
+      toast.success('Users added successful');
+    } else {
+      toast.error('error !! ');
+    }
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  return (
+    <Header>
+      <BoardName>Kanban board</BoardName>
+      {user.role === 'ADMIN' ? (
+        <React.Fragment>
+          <Button icon="user" onClick={toggleModal}>
+            Add User
+          </Button>
+          {isModalOpen && (
+            <Modal
+              isOpen={isModalOpen}
+              onClose={toggleModal}
+              renderContent={() => (
+                <ModelContents>
+                  <h2>Add user to project</h2>
+                  <Label>Users :</Label>
+                  <Selector
+                    name="User"
+                    value={userToAssignet}
+                    onChange={event => {
+                      setUserToAssignet([...userToAssignet, parseInt(event.target.value)]);
+                    }}
+                    multiple
+                  >
+                    <option value="" disabled>
+                      Select Users
+                    </option>
+                    {UserNotAssigned.map(user => (
+                      <option key={user.id} value={user.id}>
+                        {user.name}
+                      </option>
+                    ))}
+                  </Selector>
+                  <br />
+                  <Buttons onClick={addUser}>Add</Buttons>
+                </ModelContents>
+              )}
+            />
+          )}
+        </React.Fragment>
+      ) : null}
+    </Header>
+  );
+};
 
 export default ProjectBoardHeader;
