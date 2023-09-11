@@ -27,7 +27,7 @@ const ProjectBoardIssueDetailsAssigneesReporter = ({ issue, updateIssue, project
         value={issue.user?.id}
         options={userOptions}
         onChange={userIds => {
-          updateIssue({ userIds, users: userIds.map(getUserById) });
+          updateIssue({ userIds, users: userIds?.map(getUserById) });
         }}
         renderValue={({ value: userId, removeOptionValue }) =>
           renderUser(getUserById(userId), true, removeOptionValue)

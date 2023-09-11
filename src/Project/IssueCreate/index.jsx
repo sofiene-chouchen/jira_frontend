@@ -1,5 +1,5 @@
 import React from 'react';
-
+import axios from 'axios';
 import jwt from 'jwt-decode';
 import {
   IssueType,
@@ -10,8 +10,8 @@ import {
 } from 'shared/constants/issues';
 import toast from 'shared/utils/toast';
 import useApi from 'shared/hooks/api';
-import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon } from 'shared/components';
 
+import { Form, IssueTypeIcon, Icon, Avatar, IssuePriorityIcon } from 'shared/components';
 import { getStoredAuthToken } from 'shared/utils/authToken';
 import {
   FormHeading,
@@ -24,11 +24,11 @@ import {
 } from './Styles';
 
 const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => {
-  const [{ isCreating }, createIssue] = useApi.post('/issues');
   const token = getStoredAuthToken('authToken');
   const user = jwt(token);
   const currentUserId = user.id;
   console.log(project);
+
   return (
     <Form
       enableReinitialize
@@ -47,16 +47,28 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
         priority: Form.is.required(),
       }}
       onSubmit={async (values, form) => {
+        console.log(values);
         try {
-          await createIssue({
+          const data = {
             ...values,
             status: IssueStatus.BACKLOG,
-            projectId: project.id,
-            users: values.users.id,
-          });
-          await fetchProject();
-          toast.success('Issue has been successfully created.');
-          onCreate();
+            project: project.id,
+            user: values.userIds, // Change this to user IDs (plural)
+          };
+          const response = await axios.post(
+            'http://localhost:8081/api/v1/issues/addIssue', // Correct the URL
+            data,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
+          if (response.status === 200) {
+            toast.success('Issue has been successfully created.');
+            await fetchProject();
+            onCreate();
+          }
         } catch (error) {
           Form.handleAPIError(error, form);
         }
@@ -107,7 +119,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
           renderValue={renderPriority}
         />
         <Actions>
-          <ActionButton type="submit" variant="primary" isWorking={isCreating}>
+          <ActionButton type="submit" variant="primary">
             Create Issue
           </ActionButton>
           <ActionButton type="button" variant="empty" onClick={modalClose}>

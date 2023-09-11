@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // Import useEffect
+import React, { useState } from 'react'; // Import useEffect
 import jwt from 'jwt-decode';
 import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { Button } from 'shared/components';
@@ -32,22 +32,22 @@ const ProjectBoardHeader = () => {
     projectId: parseInt(id),
     userId: userToAssignet,
   };
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
-  const addUser = () => {
-    const response = axios.put('http://localhost:8081/api/v1/project', dataToPass, {
+  const addUser = async () => {
+    const response = await axios.put('http://localhost:8081/api/v1/project', dataToPass, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     if (response.status === 200) {
       toast.success('Users added successful');
+      setIsModalOpen(!isModalOpen);
     } else {
       toast.error('error !! ');
     }
-  };
-
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
   };
 
   return (
